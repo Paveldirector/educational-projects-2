@@ -9,6 +9,6 @@ def index(request):
 
 def topics(request):
     """выводит список тем"""
-    topics = Topic.objects.order_by('data_added')
+    topics = Topic.objects.order_by('datе_added')
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
