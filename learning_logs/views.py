@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Topic
+from .forms import TopicForm
 
 # Create your views here.
 
@@ -19,3 +20,19 @@ def topic(request, topic_id):
     entries = topic.entry_set.order_by('-date_added')
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_logs/topic.html', context)
+
+def new_topic(request):
+    """определяет новую тему"""
+    if request.method != 'POST':
+        # данные не отправлялись; создается пустая форма
+        form = TopicForm()
+    else:
+        # отправленны данные POST; обработать данные
+        form = TopicForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('learning_logs:tipics')
+    
+    # вывести пустую строку или недействующую форму
+    context = {'form': form}
+    return render(request, 'learning_logs/new_topic.html', context)
