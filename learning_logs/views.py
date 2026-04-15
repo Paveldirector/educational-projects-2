@@ -41,7 +41,9 @@ def new_topic(request):
         # отправленны данные POST; обработать данные
         form = TopicForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
             return redirect('learning_logs:topics')
     
     # вывести пустую строку или недействующую форму
@@ -52,6 +54,10 @@ def new_topic(request):
 def new_entry(request, topic_id):
     """добавляет новую запись по конкретной теме"""
     topic = Topic.objects.get(id=topic_id)
+
+    # принадлежит ли тема текущему пользователю
+    if topic.owner != request.user:
+        raise Http404 
 
     if request.method !='POST':
         # данные не отправлялись; создается пустая форма
