@@ -70,7 +70,7 @@ def edit_entry(request, entry_id):
         form = EntryForm(instance=entry, data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('learning_logs:topic', topic_id=topic_id)
+            return redirect('learning_logs:topic', topic_id=topic.id)
     
     # вывести пустую или недействующую форму
     context = {'entry': entry, 'topic': topic, 'form': form}
