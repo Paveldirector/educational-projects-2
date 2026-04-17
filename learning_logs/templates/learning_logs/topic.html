@@ -20,6 +20,10 @@
           <small><a href="{% url 'learning_logs:edit_entry' entry.id %}">
               edit entry</a></small>
         </h4>
+        <form action="{% url 'learning_logs:delete_entry' entry.id %}" method="post" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" style="background: none; border: none; color: red; cursor: pointer;">delete</button>
+        </form>
         <div class="card-body">
           {{ entry.text|linebreaks }}
         </div>
